@@ -1,4 +1,11 @@
-module Font exposing (Font, fontFace, fontsDecoder, fontToString, weightToString, fontStyleProperty)
+module Font exposing
+    ( Font
+    , fontFace
+    , fontsDecoder
+    , fontToString
+    , weightToString
+    , fontStyleProperty
+    )
 
 import Json.Decode as D exposing (Decoder)
 
@@ -49,7 +56,12 @@ type alias Font =
 
 fontToString : Font -> String
 fontToString { family, weight, isItalic } =
-    family ++ " (" ++ weightToString weight ++ ", " ++ (if isItalic then "italic" else "normal") ++ ")"
+    family
+        ++ " ("
+        ++ weightToString weight
+        ++ ", "
+        ++ fontStyleProperty isItalic
+        ++ ")"
 
 type Format
     = Woff2
@@ -70,13 +82,13 @@ type alias FontFace =
     String
 
 fontFace : Font -> FontFace
-fontFace { family, weight, woff, woff2, ttf, isItalic } =
+fontFace ({ family, weight, isItalic } as font) =
     let
         rules =
             String.join ";\n  "
                 [ fontFamily family 
                 , fontWeight weight
-                , "src: " ++ fontUrl woff2 Woff2 ++ ",\n    " ++ fontUrl woff Woff ++ ",\n    " ++ fontUrl ttf TTF
+                , fontSrc font
                 , fontStyle isItalic
                 ]
     in
@@ -89,6 +101,15 @@ fontFamily family =
 fontWeight : Weight -> String
 fontWeight weight =
     "font-weight: " ++ weightToString weight
+
+fontSrc : Font -> String
+fontSrc { woff2, woff, ttf } =
+    "src: "
+        ++ fontUrl woff2 Woff2
+        ++ ",\n    "
+        ++ fontUrl woff Woff
+        ++ ",\n    "
+        ++ fontUrl ttf TTF
 
 fontUrl : String -> Format -> String
 fontUrl url format =

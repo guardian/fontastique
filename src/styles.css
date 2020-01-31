@@ -1,10 +1,10 @@
 @font-face {
-    font-family: "Guardian Headline";
-    font-weight: 900;
-    src: url("GHGuardianHeadline-Black.woff2") format("woff2"), url("GHGuardianHeadline-Black.woff") format("woff"), url("GHGuardianHeadline-Black.ttf") format("truetype");
-    font-style: normal;
-  }
-  
+  font-family: "Guardian Headline";
+  font-weight: 900;
+  src: url("GHGuardianHeadline-Black.woff2") format("woff2"), url("GHGuardianHeadline-Black.woff") format("woff"), url("GHGuardianHeadline-Black.ttf") format("truetype");
+  font-style: normal;
+}
+
 @font-face {
   font-family: "Guardian Headline";
   font-weight: 900;
@@ -146,63 +146,99 @@
 }
 
 body {
-    margin: 0;
+  margin: 0;
 }
 
 .main {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    color: #121212;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  color: #121212;
 }
 
 .main__header {
-    background-color: #052962;
-    font-family: "Guardian Titlepiece";
-    color: #fff;
-    text-align: right;
-    padding-right: 1rem;
-    box-sizing: border-box;
-    flex: 0 0 7rem;
-    border-top: 1px solid #fff;
+  background-color: #052962;
+  font-family: "Guardian Titlepiece";
+  color: #fff;
+  text-align: right;
+  padding-right: 1rem;
+  box-sizing: border-box;
+  flex: 0 0 7rem;
+  border-top: 1px solid #fff;
 }
 
 .main__heading {
-    font-size: 5rem;
-    margin: 0;
+  font-size: 5rem;
+  margin: 0;
 }
 
-.main__keyline {
-    background-image: repeating-linear-gradient(#DCDCDC, #DCDCDC 1px, transparent 1px, transparent 4px);
-    width: 100%;
-    height: 16px;
-    border: none;
+.fields__keyline {
+  background-image: repeating-linear-gradient(#DCDCDC, #DCDCDC 1px, transparent 1px, transparent 4px);
+  width: 100%;
+  height: 16px;
+  border: none;
 }
 
 .main__content {
-    display: flex;
-    align-items: flex-start;
+  display: flex;
+  align-items: flex-start;
 }
 
-.main__fields {
-    flex: 0 0 22rem;
-    padding-top: 1rem;
-    border: none;
-    border-right: 1px solid #dcdcdc;
+.fields {
+  flex: 0 0 22rem;
+  padding-top: 1rem;
+  border: none;
+  border-right: 1px solid #dcdcdc;
 }
 
-.main__fields-heading {
-    margin: 0;
+.fields__heading {
+  margin: 0;
+  font-family: "Guardian Headline";
+  font-weight: bold;
 }
 
-.main__fields-button {
-    margin: 1rem 0.5rem 1rem 0;
+.fields__button {
+  margin: 1rem 0.5rem 1rem 0;
+  border-radius: 100px;
+  background-color: #052962;
+  font-size: 1rem;
+  font-family: "Guardian Text Sans";
+  font-weight: bold;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
 }
 
-.main__font-face {
-    white-space: pre-wrap;
-    padding: 3rem 1rem 1rem 3rem;
-    font-family: "monospace";
-    flex: 1;
-    border: none;
+.fields__button--secondary {
+  background-color: #C1D8FC;
+  color: #052962;
+}
+
+.fields__font-list {
+  list-style: none;
+  padding: 0;
+}
+
+.fields__font {
+  margin: 0.5rem 0;
+}
+
+.fields__checkbox {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 0.5rem;
+}
+
+.fields__font-name {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.main__font-faces {
+  white-space: pre-wrap;
+  padding: 3rem 1rem 1rem 3rem;
+  font-family: monospace;
+  flex: 1;
+  border: none;
 }
