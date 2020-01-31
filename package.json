@@ -1,0 +1,7 @@
+{
+    "scripts": {
+        "reactor": "elm reactor",
+        "build": "cp src/{index.js,fonts.json,styles.css,index.html} dist && cp assets/* dist && elm make src/Cli.elm --output=dist/cli.js && elm make src/Main.elm --output=dist/main.js",
+        "start": "npm run build && node dist/index.js"
+    }
+}

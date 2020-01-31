@@ -1,0 +1,172 @@
+{
+    "fonts": [
+        {
+            "family": "Guardian Headline",
+            "weight": "Black",
+            "isItalic": false,
+            "woff2": "GHGuardianHeadline-Black.woff2",
+            "woff": "GHGuardianHeadline-Black.woff",
+            "ttf": "GHGuardianHeadline-Black.ttf"
+        },
+        {
+            "family": "Guardian Headline",
+            "weight": "Black",
+            "isItalic": true,
+            "woff2": "GHGuardianHeadline-BlackItalic.woff2",
+            "woff": "GHGuardianHeadline-BlackItalic.woff",
+            "ttf": "GHGuardianHeadline-BlackItalic.ttf"
+        },
+        {
+            "family": "Guardian Headline",
+            "weight": "Bold",
+            "isItalic": false,
+            "woff2": "GHGuardianHeadline-Bold.woff2",
+            "woff": "GHGuardianHeadline-Bold.woff",
+            "ttf": "GHGuardianHeadline-Bold.ttf"
+        },
+        {
+            "family": "Guardian Headline",
+            "weight": "Bold",
+            "isItalic": true,
+            "woff2": "GHGuardianHeadline-BoldItalic.woff2",
+            "woff": "GHGuardianHeadline-BoldItalic.woff",
+            "ttf": "GHGuardianHeadline-BoldItalic.ttf"
+        },
+        {
+            "family": "Guardian Headline",
+            "weight": "Semibold",
+            "isItalic": false,
+            "woff2": "GHGuardianHeadline-Semibold.woff2",
+            "woff": "GHGuardianHeadline-Semibold.woff",
+            "ttf": "GHGuardianHeadline-Semibold.ttf"
+        },
+        {
+            "family": "Guardian Headline",
+            "weight": "Semibold",
+            "isItalic": true,
+            "woff2": "GHGuardianHeadline-SemiboldItalic.woff2",
+            "woff": "GHGuardianHeadline-SemiboldItalic.woff",
+            "ttf": "GHGuardianHeadline-SemiboldItalic.ttf"
+        },
+        {
+            "family": "Guardian Headline",
+            "weight": "Medium",
+            "isItalic": false,
+            "woff2": "GHGuardianHeadline-Medium.woff2",
+            "woff": "GHGuardianHeadline-Medium.woff",
+            "ttf": "GHGuardianHeadline-Medium.ttf"
+        },
+        {
+            "family": "Guardian Headline",
+            "weight": "Medium",
+            "isItalic": true,
+            "woff2": "GHGuardianHeadline-MediumItalic.woff2",
+            "woff": "GHGuardianHeadline-MediumItalic.woff",
+            "ttf": "GHGuardianHeadline-MediumItalic.ttf"
+        },
+        {
+            "family": "Guardian Headline",
+            "weight": "Regular",
+            "isItalic": false,
+            "woff2": "GHGuardianHeadline-Regular.woff2",
+            "woff": "GHGuardianHeadline-Regular.woff",
+            "ttf": "GHGuardianHeadline-Regular.ttf"
+        },
+        {
+            "family": "Guardian Headline",
+            "weight": "Regular",
+            "isItalic": true,
+            "woff2": "GHGuardianHeadline-RegularItalic.woff2",
+            "woff": "GHGuardianHeadline-RegularItalic.woff",
+            "ttf": "GHGuardianHeadline-RegularItalic.ttf"
+        },
+        {
+            "family": "Guardian Headline",
+            "weight": "Light",
+            "isItalic": false,
+            "woff2": "GHGuardianHeadline-Light.woff2",
+            "woff": "GHGuardianHeadline-Light.woff",
+            "ttf": "GHGuardianHeadline-Light.ttf"
+        },
+        {
+            "family": "Guardian Headline",
+            "weight": "Light",
+            "isItalic": true,
+            "woff2": "GHGuardianHeadline-LightItalic.woff2",
+            "woff": "GHGuardianHeadline-LightItalic.woff",
+            "ttf": "GHGuardianHeadline-LightItalic.ttf"
+        },
+        {
+            "family": "Guardian Titlepiece",
+            "weight": "Bold",
+            "isItalic": false,
+            "woff2": "GTGuardianTitlepiece-Bold.woff2",
+            "woff": "GTGuardianTitlepiece-Bold.woff",
+            "ttf": "GTGuardianTitlepiece-Bold.ttf"
+        },
+        {
+            "family": "Guardian Text Egyptian",
+            "weight": "Bold",
+            "isItalic": false,
+            "woff2": "GuardianTextEgyptian-Bold.woff2",
+            "woff": "GuardianTextEgyptian-Bold.woff",
+            "ttf": "GuardianTextEgyptian-Bold.ttf"
+        },
+        {
+            "family": "Guardian Text Egyptian",
+            "weight": "Bold",
+            "isItalic": true,
+            "woff2": "GuardianTextEgyptian-BoldItalic.woff2",
+            "woff": "GuardianTextEgyptian-BoldItalic.woff",
+            "ttf": "GuardianTextEgyptian-BoldItalic.ttf"
+        },
+        {
+            "family": "Guardian Text Egyptian",
+            "weight": "Regular",
+            "isItalic": false,
+            "woff2": "GuardianTextEgyptian-Reg.woff2",
+            "woff": "GuardianTextEgyptian-Reg.woff",
+            "ttf": "GuardianTextEgyptian-Reg.ttf"
+        },
+        {
+            "family": "Guardian Text Egyptian",
+            "weight": "Regular",
+            "isItalic": true,
+            "woff2": "GuardianTextEgyptian-RegIt.woff2",
+            "woff": "GuardianTextEgyptian-RegIt.woff",
+            "ttf": "GuardianTextEgyptian-RegIt.ttf"
+        },
+        {
+            "family": "Guardian Text Sans",
+            "weight": "Bold",
+            "isItalic": false,
+            "woff2": "GuardianTextSans-Bold.woff2",
+            "woff": "GuardianTextSans-Bold.woff",
+            "ttf": "GuardianTextSans-Bold.ttf"
+        },
+        {
+            "family": "Guardian Text Sans",
+            "weight": "Bold",
+            "isItalic": true,
+            "woff2": "GuardianTextSans-BoldItalic.woff2",
+            "woff": "GuardianTextSans-BoldItalic.woff",
+            "ttf": "GuardianTextSans-BoldItalic.ttf"
+        },
+        {
+            "family": "Guardian Text Sans",
+            "weight": "Regular",
+            "isItalic": false,
+            "woff2": "GuardianTextSans-Regular.woff2",
+            "woff": "GuardianTextSans-Regular.woff",
+            "ttf": "GuardianTextSans-Regular.ttf"
+        },
+        {
+            "family": "Guardian Text Sans",
+            "weight": "Regular",
+            "isItalic": true,
+            "woff2": "GuardianTextSans-RegularItalic.woff2",
+            "woff": "GuardianTextSans-RegularItalic.woff",
+            "ttf": "GuardianTextSans-RegularItalic.ttf"
+        }
+    ]
+}
