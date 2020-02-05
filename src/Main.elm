@@ -12,7 +12,12 @@ import Font exposing (..)
 
 -- MAIN
 
-main = Browser.element { init = init, view = view, update = update, subscriptions = subscriptions }
+main = Browser.element
+    { init = init
+    , view = view
+    , update = update
+    , subscriptions = subscriptions
+    }
 
 
 -- MODEL
@@ -22,7 +27,6 @@ type alias Model =
 
 type alias Selected =
     Bool
-
 
 init : () -> (Model, Cmd Msg)
 init _ =
@@ -48,9 +52,9 @@ update msg model =
                 Err message ->
                     (model, Cmd.none)
         Check index ->
-            (List.indexedMap (\idx font -> if idx == index then (True, second font) else font) model, Cmd.none)
+            (List.indexedMap (setSelected index True) model, Cmd.none)
         Uncheck index ->
-            (List.indexedMap (\idx font -> if idx == index then (False, second font) else font) model, Cmd.none)
+            (List.indexedMap (setSelected index False) model, Cmd.none)
         SelectAll ->
             (List.map (\font -> (True, second font)) model, Cmd.none)
         DeselectAll ->
@@ -62,6 +66,10 @@ getFonts =
     { url = "/fonts.json"
     , expect = Http.expectJson GotFonts fontsDecoder
     }
+
+setSelected : Int -> Selected -> Int -> (Selected, Font) -> (Selected, Font)
+setSelected selectedIndex selected index font =
+    if selectedIndex == index then (selected, second font) else font
 
 
 -- SUBSCRIPTIONS
@@ -76,32 +84,34 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div [ class "main" ]
-        [ header [ class "main__header" ] [ h1 [ class "main__heading" ] [ text "Fontastique" ] ]
+        [ header [ class "main__header" ]
+            [ h1 [ class "main__heading" ] [ text "Fontastique" ]
+            ]
         , main_ [ class "main__content" ]
-            [ fieldset [ class "main__fields" ]
-                [ h2 [ style "font-family" "Guardian Headline", style "font-weight" "bold", class "main__fields-heading" ] [ text "Choose your fonts" ]
-                , hr [ class "main__keyline" ] []
-                , button (buttonStyles ++ [ onClick SelectAll ]) [ text "Select all" ]
-                , button (buttonStyles ++ [ onClick DeselectAll, style "background-color" "#C1D8FC", style "color" "#052962" ]) [ text "Deselect all" ]
-                , ul [ style "list-style" "none", style "padding" "0" ] <| List.indexedMap viewFont model
+            [ fieldset [ class "fields" ]
+                [ h2 [ class "fields__heading" ] [ text "Choose your fonts" ]
+                , hr [ class "fields__keyline" ] []
+                , button
+                    [ class "fields__button"
+                    , onClick SelectAll
+                    ]
+                    [ text "Select all" ]
+                , button
+                    [ class "fields__button fields__button--secondary"
+                    , onClick DeselectAll
+                    ]
+                    [ text "Deselect all" ]
+                , ul [ class "fields__font-list" ]
+                    <| List.indexedMap viewFont model
                 ]
-            , pre [ class "main__font-face" ] [ text <| String.join "\n" <| List.filterMap viewFontFaces model ]
+            , pre
+                [ class "main__font-faces" ]
+                [ List.filterMap viewFontFaces model
+                    |> String.join "\n"
+                    |> text
+                ]
             ]
         ]
-
-buttonStyles : List (Attribute Msg)
-buttonStyles =
-    [ style "border-radius" "100px"
-    , style "background-color" "#052962"
-    , style "font-size" "1rem"
-    , style "font-family" "Guardian Text Sans"
-    , style "font-weight" "bold"
-    , style "color" "#fff"
-    , style "border" "none"
-    , style "padding" "0.5rem 1rem"
-    , style "cursor" "pointer"
-    , class "main__fields-button"
-    ]
 
 viewFontFaces : (Selected, Font) -> Maybe String
 viewFontFaces (isSelected, font) =
@@ -109,7 +119,7 @@ viewFontFaces (isSelected, font) =
 
 viewFont : Int -> (Selected, Font) -> Html Msg
 viewFont index (selected, font) =
-    li [ style "margin" "0.5rem 0" ]
+    li [ class "fields__font" ]
         [ label
             [ style "font-family" font.family
             , style "font-weight" <| weightToString font.weight
@@ -119,16 +129,10 @@ viewFont index (selected, font) =
                 [ type_ "checkbox"
                 , onCheck <| check index
                 , checked selected
-                , style "display" "inline-block"
-                , style "vertical-align" "middle"
-                , style "margin-right" "0.5rem"
+                , class "fields__checkbox"
                 ]
                 []
-            , span
-                [ style "display" "inline-block"
-                , style "vertical-align" "middle"
-                ]
-                [ text <| fontToString font ]
+            , span [ class "fields__font-name" ] [ text <| fontToString font ]
             ]
         ]
 
