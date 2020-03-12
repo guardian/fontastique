@@ -1,8 +1,10 @@
 {
     "scripts": {
         "reactor": "elm reactor",
-        "build": "cp src/{index.js,fonts.json,styles.css,index.html} dist && cp assets/* dist && elm make src/Cli.elm --output=dist/cli.js && elm make src/Main.elm --output=dist/main.js",
-        "start": "npm run build && node dist/index.js"
+        "build:copyAssets": "cp src/{index.js,fonts.json,styles.css,index.html} dist && cp assets/* dist",
+        "build:cli": "elm make src/Cli.elm --output=dist/cli.js",
+        "build:main": "elm make src/Main.elm --output=dist/main.js",
+        "build": "npm run build:copyAssets && npm run build:cli && npm run build:main"
     },
     "dependencies": {
         "elm": "^0.19.1-3"
