@@ -104,18 +104,36 @@ view model =
                 , ul [ class "fields__font-list" ]
                     <| List.indexedMap viewFont model
                 ]
-            , pre
-                [ class "main__font-faces" ]
-                [ List.filterMap viewFontFaces model
-                    |> String.join "\n"
-                    |> text
-                ]
+            , viewFontFaces model
             ]
         ]
 
-viewFontFaces : (Selected, Font) -> Maybe String
-viewFontFaces (isSelected, font) =
-    if isSelected then Just (fontFace font) else Nothing
+viewFontFaces : Model -> Html Msg
+viewFontFaces model =
+    let
+        selected =
+            List.filterMap pickSelected model
+    in
+        section [ class "font-faces" ]
+            [ viewFontsForPlatform "Web" (web selected)
+            , viewFontsForPlatform "Android" (android selected)
+            ]
+
+viewFontsForPlatform : String -> List String -> Html Msg
+viewFontsForPlatform heading fonts =
+    details []
+        [ summary [ class "font-faces__heading" ] [ text heading ]
+        , pre
+            [ class "font-faces__code" ]
+            [ fonts
+                |> String.join "\n"
+                |> text
+            ]
+        ]
+
+pickSelected : (Selected, Font) -> Maybe Font
+pickSelected (isSelected, font) =
+    if isSelected then Just font else Nothing
 
 viewFont : Int -> (Selected, Font) -> Html Msg
 viewFont index (selected, font) =

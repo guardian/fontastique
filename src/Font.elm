@@ -1,5 +1,7 @@
 module Font exposing
     ( Font
+    , web
+    , android
     , fontFace
     , fontsDecoder
     , fontToString
@@ -8,6 +10,7 @@ module Font exposing
     )
 
 import Json.Decode as D exposing (Decoder)
+import Dict exposing (Dict)
 
 
 -- FONTS
@@ -78,8 +81,29 @@ formatToString format =
         TTF ->
             "truetype"
 
+groupByFamily : List Font -> Dict String (List Font)
+groupByFamily =
+    let
+        insertFont font variants =
+            case variants of
+                Just vs ->
+                    font :: vs
+                Nothing ->
+                    List.singleton font
+        f font =
+            Dict.update font.family (Just << insertFont font)
+    in
+        List.foldl f Dict.empty
+
+
+-- WEB
+
 type alias FontFace =
     String
+
+web : List Font -> List FontFace
+web =
+    List.map fontFace
 
 fontFace : Font -> FontFace
 fontFace ({ family, weight, isItalic } as font) =
@@ -126,6 +150,44 @@ fontStyle isItalic =
 fontStyleProperty : Bool -> String
 fontStyleProperty isItalic =
     if isItalic then "italic" else "normal"
+
+
+-- ANDROID
+
+type alias AndroidFont =
+    String
+
+android : List Font -> List AndroidFont
+android fonts =
+    groupByFamily fonts
+        |> Dict.values
+        |> List.map androidFamily
+
+androidFamily : List Font -> AndroidFont
+androidFamily fonts =
+    "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+        ++ "\n"
+        ++ "<font-family xmlns:app=\"http://schemas.android.com/apk/res-auto\">"
+        ++ "\n"
+        ++ String.join "\n" (List.map androidFont fonts)
+        ++ "\n"
+        ++ "</font-family>"
+        ++ "\n"
+
+androidFont : Font -> String
+androidFont { weight, isItalic, ttf } =
+    "<font"
+        ++ "\n"
+        ++ "    android:fontStyle=\"" ++ fontStyleProperty isItalic ++ "\""
+        ++ "\n"
+        ++ "    android:fontWeight=\"" ++ weightToString weight ++ "\""
+        ++ "\n"
+        ++ "    android:font=\"" ++ "@font/" ++ androidFilename ttf ++ "\""
+        ++ " />"
+
+androidFilename : String -> String
+androidFilename =
+    String.map (\c -> if c == '-' then '_' else Char.toLower c)
 
 
 -- JSON
