@@ -176,13 +176,13 @@ androidFamily fonts =
 
 androidFont : Font -> String
 androidFont { weight, isItalic, ttf } =
-    "<font"
-        ++ "\n"
-        ++ "    android:fontStyle=\"" ++ fontStyleProperty isItalic ++ "\""
-        ++ "\n"
-        ++ "    android:fontWeight=\"" ++ weightToString weight ++ "\""
-        ++ "\n"
-        ++ "    android:font=\"" ++ "@font/" ++ androidFilename ttf ++ "\""
+    "    <font"
+        ++ "\n        "
+        ++ "android:fontStyle=\"" ++ fontStyleProperty isItalic ++ "\""
+        ++ "\n        "
+        ++ "android:fontWeight=\"" ++ weightToString weight ++ "\""
+        ++ "\n        "
+        ++ "android:font=\"" ++ "@font/" ++ androidFilename ttf ++ "\""
         ++ " />"
 
 androidFilename : String -> String
