@@ -1,5 +1,8 @@
 module Font exposing
     ( Font
+    , FontFace
+    , web
+    , android
     , fontFace
     , fontsDecoder
     , fontToString
@@ -8,6 +11,7 @@ module Font exposing
     )
 
 import Json.Decode as D exposing (Decoder)
+import Dict exposing (Dict)
 
 
 -- FONTS
@@ -54,6 +58,9 @@ type alias Font =
     , isItalic : Bool
     }
 
+type alias FontFace =
+    String
+
 fontToString : Font -> String
 fontToString { family, weight, isItalic } =
     family
@@ -78,8 +85,26 @@ formatToString format =
         TTF ->
             "truetype"
 
-type alias FontFace =
-    String
+groupByFamily : List Font -> List (List Font)
+groupByFamily =
+    let
+        insertFont font variants =
+            case variants of
+                Just vs ->
+                    font :: vs
+                Nothing ->
+                    List.singleton font
+        f font =
+            Dict.update font.family (Just << insertFont font)
+    in
+        Dict.values << List.foldl f Dict.empty
+
+
+-- WEB
+
+web : List Font -> List FontFace
+web =
+    List.map fontFace
 
 fontFace : Font -> FontFace
 fontFace ({ family, weight, isItalic } as font) =
@@ -126,6 +151,40 @@ fontStyle isItalic =
 fontStyleProperty : Bool -> String
 fontStyleProperty isItalic =
     if isItalic then "italic" else "normal"
+
+
+-- ANDROID
+
+android : List Font -> List FontFace
+android fonts =
+    groupByFamily fonts
+        |> List.map androidFamily
+
+androidFamily : List Font -> FontFace
+androidFamily fonts =
+    "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+        ++ "\n"
+        ++ "<font-family xmlns:app=\"http://schemas.android.com/apk/res-auto\">"
+        ++ "\n"
+        ++ String.join "\n" (List.map androidFont fonts)
+        ++ "\n"
+        ++ "</font-family>"
+        ++ "\n"
+
+androidFont : Font -> String
+androidFont { weight, isItalic, ttf } =
+    "    <font"
+        ++ "\n        "
+        ++ "android:fontStyle=\"" ++ fontStyleProperty isItalic ++ "\""
+        ++ "\n        "
+        ++ "android:fontWeight=\"" ++ weightToString weight ++ "\""
+        ++ "\n        "
+        ++ "android:font=\"" ++ "@font/" ++ androidFilename ttf ++ "\""
+        ++ " />"
+
+androidFilename : String -> String
+androidFilename =
+    String.toLower << String.replace "-" "_"
 
 
 -- JSON

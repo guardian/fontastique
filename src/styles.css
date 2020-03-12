@@ -235,10 +235,15 @@ body {
   vertical-align: middle;
 }
 
-.main__font-faces {
+.font-faces {
   white-space: pre-wrap;
   padding: 3rem 1rem 1rem 3rem;
-  font-family: monospace;
   flex: 1;
-  border: none;
+}
+
+.font-faces__heading {
+  font-family: "Guardian Headline";
+  font-size: large;
+  font-weight: bold;
+  cursor: pointer;
 }
