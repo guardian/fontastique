@@ -119,13 +119,13 @@ viewFontFaces model =
             , viewFontsForPlatform "Android" (android selected)
             ]
 
-viewFontsForPlatform : String -> List String -> Html Msg
-viewFontsForPlatform heading fonts =
+viewFontsForPlatform : String -> List FontFace -> Html Msg
+viewFontsForPlatform heading fontFaces =
     details []
         [ summary [ class "font-faces__heading" ] [ text heading ]
         , pre
             [ class "font-faces__code" ]
-            [ fonts
+            [ fontFaces
                 |> String.join "\n"
                 |> text
             ]

@@ -1,5 +1,6 @@
 module Font exposing
     ( Font
+    , FontFace
     , web
     , android
     , fontFace
@@ -57,6 +58,9 @@ type alias Font =
     , isItalic : Bool
     }
 
+type alias FontFace =
+    String
+
 fontToString : Font -> String
 fontToString { family, weight, isItalic } =
     family
@@ -97,9 +101,6 @@ groupByFamily =
 
 
 -- WEB
-
-type alias FontFace =
-    String
 
 web : List Font -> List FontFace
 web =
@@ -154,15 +155,12 @@ fontStyleProperty isItalic =
 
 -- ANDROID
 
-type alias AndroidFont =
-    String
-
-android : List Font -> List AndroidFont
+android : List Font -> List FontFace
 android fonts =
     groupByFamily fonts
         |> List.map androidFamily
 
-androidFamily : List Font -> AndroidFont
+androidFamily : List Font -> FontFace
 androidFamily fonts =
     "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
         ++ "\n"
