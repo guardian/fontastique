@@ -81,7 +81,7 @@ formatToString format =
         TTF ->
             "truetype"
 
-groupByFamily : List Font -> Dict String (List Font)
+groupByFamily : List Font -> List (List Font)
 groupByFamily =
     let
         insertFont font variants =
@@ -93,7 +93,7 @@ groupByFamily =
         f font =
             Dict.update font.family (Just << insertFont font)
     in
-        List.foldl f Dict.empty
+        Dict.values << List.foldl f Dict.empty
 
 
 -- WEB
@@ -160,7 +160,6 @@ type alias AndroidFont =
 android : List Font -> List AndroidFont
 android fonts =
     groupByFamily fonts
-        |> Dict.values
         |> List.map androidFamily
 
 androidFamily : List Font -> AndroidFont
@@ -187,7 +186,7 @@ androidFont { weight, isItalic, ttf } =
 
 androidFilename : String -> String
 androidFilename =
-    String.map (\c -> if c == '-' then '_' else Char.toLower c)
+    String.toLower << String.replace "-" "_"
 
 
 -- JSON
