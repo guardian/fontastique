@@ -154,10 +154,12 @@ body {
   display: flex;
   flex-direction: column;
   color: #121212;
+
+  --brand-400: #052962;
 }
 
 .main__header {
-  background-color: #052962;
+  background-color: var(--brand-400);
   font-family: "Guardian Titlepiece";
   color: #fff;
   text-align: right;
@@ -172,7 +174,7 @@ body {
   margin: 0;
 }
 
-.fields__keyline {
+.fields__keyline, .font-faces__keyline {
   background-image: repeating-linear-gradient(#DCDCDC, #DCDCDC 1px, transparent 1px, transparent 4px);
   width: 100%;
   height: 16px;
@@ -191,33 +193,35 @@ body {
   border-right: 1px solid #dcdcdc;
 }
 
-.fields__heading {
+.fields__heading, .font-faces__heading {
   margin: 0;
   font-family: "Guardian Headline";
   font-weight: bold;
 }
 
-.fields__button {
-  margin: 1rem 0.5rem 1rem 0;
-  border-radius: 100px;
-  background-color: #052962;
-  font-size: 1rem;
-  font-family: "Guardian Text Sans";
-  font-weight: bold;
+.fields__button, .font-faces__download {
+  border-radius: 2rem;
+  background-color: var(--brand-400);
   color: #fff;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0 1.5rem;
+  font-size: 1.025rem;
+  height: 2.75rem;
   cursor: pointer;
+  font-family: "Guardian Text Sans";
+  font-weight: bold;
+  margin: 0.5rem 0.5rem 1.5rem 0;
 }
 
 .fields__button--secondary {
   background-color: #C1D8FC;
-  color: #052962;
+  color: var(--brand-400);
 }
 
 .fields__font-list {
   list-style: none;
   padding: 0;
+  margin-top: 0;
 }
 
 .fields__font {
@@ -237,13 +241,12 @@ body {
 
 .font-faces {
   white-space: pre-wrap;
-  padding: 3rem 1rem 1rem 3rem;
+  padding: 1rem 1rem 3rem;
   flex: 1;
 }
 
-.font-faces__heading {
-  font-family: "Guardian Headline";
-  font-size: large;
-  font-weight: bold;
+.font-faces__source {
   cursor: pointer;
+  font-family: "Guardian Text Egyptian";
+  margin: 0.5rem 0;
 }
