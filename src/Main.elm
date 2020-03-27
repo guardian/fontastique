@@ -6,6 +6,7 @@ import Html.Attributes exposing (type_, checked, style, class)
 import Html.Events exposing (onCheck, onClick)
 import Http
 import Tuple exposing (pair, second)
+import File.Download as Download
 
 import Font exposing (..)
 
@@ -32,6 +33,14 @@ init : () -> (Model, Cmd Msg)
 init _ =
     ([], getFonts)
 
+pickSelected : (Selected, Font) -> Maybe Font
+pickSelected (isSelected, font) =
+    if isSelected then Just font else Nothing
+
+selectedFonts : Model -> List Font
+selectedFonts =
+    List.filterMap pickSelected
+
 
 -- UPDATE
 
@@ -41,6 +50,7 @@ type Msg
     | Uncheck Int
     | SelectAll
     | DeselectAll
+    | DownloadWeb
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -59,6 +69,14 @@ update msg model =
             (List.map (\font -> (True, second font)) model, Cmd.none)
         DeselectAll ->
             (List.map (\font -> (False, second font)) model, Cmd.none)
+        DownloadWeb ->
+            let
+                css =
+                    selectedFonts model
+                        |> web
+                        |> String.join "\n"
+            in
+                (model, Download.string "fonts.css" "text/css" css)
 
 getFonts : Cmd Msg
 getFonts =
@@ -112,17 +130,32 @@ viewFontFaces : Model -> Html Msg
 viewFontFaces model =
     let
         selected =
-            List.filterMap pickSelected model
+            selectedFonts model
+        webFonts =
+            web selected
+        androidFonts =
+            android selected
     in
         section [ class "font-faces" ]
-            [ viewFontsForPlatform "Web" (web selected)
-            , viewFontsForPlatform "Android" (android selected)
+            [ h2 [ class "font-faces__heading" ] [ text "Get your fonts" ]
+            , hr [ class "font-faces__keyline" ] []
+            , section []
+                [ h3 [ class "font-faces__heading" ] [ text "Web" ]
+                , viewFontSource webFonts
+                , button
+                    [ class "font-faces__download", onClick DownloadWeb ]
+                    [ text "Download CSS File" ]
+                ]
+            , section []
+                [ h3 [ class "font-faces__heading" ] [ text "Android" ]
+                , viewFontSource androidFonts
+                ]
             ]
 
-viewFontsForPlatform : String -> List FontFace -> Html Msg
-viewFontsForPlatform heading fontFaces =
+viewFontSource : List FontFace -> Html Msg
+viewFontSource fontFaces =
     details []
-        [ summary [ class "font-faces__heading" ] [ text heading ]
+        [ summary [ class "font-faces__source" ] [ text "View Source" ]
         , pre
             [ class "font-faces__code" ]
             [ fontFaces
@@ -130,10 +163,6 @@ viewFontsForPlatform heading fontFaces =
                 |> text
             ]
         ]
-
-pickSelected : (Selected, Font) -> Maybe Font
-pickSelected (isSelected, font) =
-    if isSelected then Just font else Nothing
 
 viewFont : Int -> (Selected, Font) -> Html Msg
 viewFont index (selected, font) =
