@@ -28,3 +28,13 @@ Alternatively you can host the `dist` directory locally using a server of your c
 cd dist
 python3 -m http.server 8080
 ```
+
+## Recommended developer setup
+
+We recommend using VSCode.
+
+### Extensions
+
+VSCode should prompt you to install our recommended extensions when you open the project.
+
+You can also find these extensions by searching for `@recommended` in the extensions pane.
