@@ -3,3 +3,5 @@ elm-stuff
 dist
 assets
 *.DS_Store
+.vscode
+!.vscode/extensions.json
