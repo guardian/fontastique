@@ -1,11 +1,11 @@
 module Font exposing
     ( Font
-    , FontFace
     , android
     , fontFace
     , fontStyleProperty
     , fontToString
     , fontsDecoder
+    , ios
     , web
     , weightToString
     )
@@ -71,10 +71,6 @@ type alias Font =
     }
 
 
-type alias FontFace =
-    String
-
-
 fontToString : Font -> String
 fontToString { family, weight, isItalic } =
     family
@@ -125,12 +121,13 @@ groupByFamily =
 -- WEB
 
 
-web : List Font -> List FontFace
+web : List Font -> String
 web =
     List.map fontFace
+        >> String.join "\n"
 
 
-fontFace : Font -> FontFace
+fontFace : Font -> String
 fontFace ({ family, weight, isItalic } as font) =
     let
         rules =
@@ -192,13 +189,14 @@ fontStyleProperty isItalic =
 -- ANDROID
 
 
-android : List Font -> List FontFace
+android : List Font -> String
 android fonts =
     groupByFamily fonts
         |> List.map androidFamily
+        |> String.join "\n"
 
 
-androidFamily : List Font -> FontFace
+androidFamily : List Font -> String
 androidFamily fonts =
     "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
         ++ "\n"
@@ -232,6 +230,26 @@ androidFont { weight, isItalic, ttf } =
 androidFilename : String -> String
 androidFilename =
     String.toLower << String.replace "-" "_"
+
+
+
+-- iOS
+
+
+ios : List Font -> String
+ios fonts =
+    "<key>UIAppFonts</key>"
+        ++ "\n"
+        ++ "<array>"
+        ++ "\n"
+        ++ String.join "\n" (List.map iosFont fonts)
+        ++ "\n"
+        ++ "</array>"
+
+
+iosFont : Font -> String
+iosFont font =
+    "    <string>" ++ font.ttf ++ "</string>"
 
 
 

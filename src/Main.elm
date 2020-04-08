@@ -62,10 +62,8 @@ selectedFonts =
 
 
 cssString : Model -> String
-cssString model =
-    selectedFonts model
-        |> web
-        |> String.join "\n"
+cssString =
+    selectedFonts >> web
 
 
 
@@ -181,36 +179,40 @@ viewFontFaces model =
 
         androidFonts =
             android selected
+        iosFonts =
+            ios selected
     in
-    section [ class "font-faces" ]
-        [ h2 [ class "font-faces__heading" ] [ text "Get your fonts" ]
-        , hr [ class "font-faces__keyline" ] []
-        , section []
-            [ h3 [ class "font-faces__heading" ] [ text "Web" ]
-            , viewFontSource webFonts
-            , button
-                [ class "font-faces__copy", onClick CopyWeb ]
-                [ text "Copy CSS" ]
-            , button
-                [ class "font-faces__download", onClick DownloadWeb ]
-                [ text "Download CSS File" ]
+        section [ class "font-faces" ]
+            [ h2 [ class "font-faces__heading" ] [ text "Get your fonts" ]
+            , hr [ class "font-faces__keyline" ] []
+            , section []
+                [ h3 [ class "font-faces__heading" ] [ text "Web" ]
+                , viewFontSource webFonts
+                , button
+                    [ class "font-faces__copy", onClick CopyWeb ]
+                    [ text "Copy CSS" ]
+                , button
+                    [ class "font-faces__download", onClick DownloadWeb ]
+                    [ text "Download CSS File" ]
+                ]
+            , section []
+                [ h3 [ class "font-faces__heading" ] [ text "Android" ]
+                , viewFontSource androidFonts
+                ]
+            , section []
+                [ h3 [ class "font-faces__heading" ] [ text "iOS" ]
+                , viewFontSource iosFonts
+                ]
             ]
-        , section []
-            [ h3 [ class "font-faces__heading" ] [ text "Android" ]
-            , viewFontSource androidFonts
-            ]
-        ]
 
 
-viewFontSource : List FontFace -> Html Msg
+viewFontSource : String -> Html Msg
 viewFontSource fontFaces =
     details []
         [ summary [ class "font-faces__source" ] [ text "View Source" ]
         , pre
             [ class "font-faces__code" ]
-            [ fontFaces
-                |> String.join "\n"
-                |> text
+            [ text fontFaces
             ]
         ]
 
