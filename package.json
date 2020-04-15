@@ -1,10 +1,10 @@
 {
     "scripts": {
         "reactor": "elm reactor",
-        "build:copyAssets": "cp src/{index.js,fonts.json,styles.css,index.html} dist && cp assets/* dist",
+        "build:copyAssets": "cp src/{index.js,fonts.json,styles.css,index.html} dist && cp -R assets/ dist",
         "build:cli": "elm make src/Cli.elm --output=dist/cli.js",
         "build:main": "elm make src/Main.elm --output=dist/main.js",
-        "build": "npm run build:copyAssets && npm run build:cli && npm run build:main",
+        "build": "mkdir -p assets && mkdir -p dist && npm run build:copyAssets && npm run build:cli && npm run build:main",
         "start": "npm run build && python3 -m http.server --directory dist"
     },
     "dependencies": {
