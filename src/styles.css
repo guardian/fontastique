@@ -199,7 +199,8 @@ body {
   font-weight: bold;
 }
 
-.fields__button, .font-faces__download {
+.fields__button, .font-faces__download,
+.fields__button, .font-faces__copy {
   border-radius: 2rem;
   background-color: var(--brand-400);
   color: #fff;

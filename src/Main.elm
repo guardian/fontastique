@@ -1,4 +1,4 @@
-module Main exposing (..)
+port module Main exposing (..)
 
 import Browser
 import Html exposing (..)
@@ -10,6 +10,10 @@ import File.Download as Download
 
 import Font exposing (..)
 
+
+-- PORTS
+
+port sendMessage : String -> Cmd msg
 
 -- MAIN
 
@@ -51,6 +55,7 @@ type Msg
     | SelectAll
     | DeselectAll
     | DownloadWeb
+    | CopyWeb
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
@@ -77,6 +82,14 @@ update msg model =
                         |> String.join "\n"
             in
                 (model, Download.string "fonts.css" "text/css" css)
+        CopyWeb ->
+            let
+                css =
+                    selectedFonts model
+                        |> web
+                        |> String.join "\n"
+            in
+                (model, sendMessage css)
 
 getFonts : Cmd Msg
 getFonts =
@@ -142,6 +155,9 @@ viewFontFaces model =
             , section []
                 [ h3 [ class "font-faces__heading" ] [ text "Web" ]
                 , viewFontSource webFonts
+                , button
+                    [ class "font-faces__copy", onClick CopyWeb ]
+                    [ text "Copy CSS" ]
                 , button
                     [ class "font-faces__download", onClick DownloadWeb ]
                     [ text "Download CSS File" ]
