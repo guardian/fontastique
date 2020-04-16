@@ -45,6 +45,12 @@ selectedFonts : Model -> List Font
 selectedFonts =
     List.filterMap pickSelected
 
+cssString : Model -> String
+cssString model =
+    selectedFonts model
+        |> web
+        |> String.join "\n"
+
 
 -- UPDATE
 
@@ -75,21 +81,9 @@ update msg model =
         DeselectAll ->
             (List.map (\font -> (False, second font)) model, Cmd.none)
         DownloadWeb ->
-            let
-                css =
-                    selectedFonts model
-                        |> web
-                        |> String.join "\n"
-            in
-                (model, Download.string "fonts.css" "text/css" css)
+            (model, Download.string "fonts.css" "text/css" (cssString model))
         CopyWeb ->
-            let
-                css =
-                    selectedFonts model
-                        |> web
-                        |> String.join "\n"
-            in
-                (model, sendMessage css)
+            (model, sendMessage (cssString model))
 
 getFonts : Cmd Msg
 getFonts =
