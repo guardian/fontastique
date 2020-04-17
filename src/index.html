@@ -11,9 +11,13 @@
     <div id="main"></div>
     <script type="text/javascript" src="main.js"></script>
     <script type="text/javascript">
-        Elm.Main.init({
+        const app = Elm.Main.init({
             node: document.getElementById('main'),
         })
+
+        app.ports.sendMessage.subscribe(function(message) {
+            navigator.clipboard.writeText(message)
+        });
     </script>
 </body>
 </html>
