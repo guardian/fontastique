@@ -1,20 +1,22 @@
 module Font exposing
     ( Font
     , FontFace
-    , web
     , android
     , fontFace
-    , fontsDecoder
-    , fontToString
-    , weightToString
     , fontStyleProperty
+    , fontToString
+    , fontsDecoder
+    , web
+    , weightToString
     )
 
-import Json.Decode as D exposing (Decoder)
 import Dict exposing (Dict)
+import Json.Decode as D exposing (Decoder)
+
 
 
 -- FONTS
+
 
 type Weight
     = Thin
@@ -27,27 +29,37 @@ type Weight
     | ExtraBold
     | Black
 
+
 weightToString : Weight -> String
 weightToString weight =
     case weight of
         Thin ->
             "100"
+
         ExtraLight ->
             "200"
+
         Light ->
             "300"
+
         Regular ->
             "400"
+
         Medium ->
             "500"
+
         SemiBold ->
             "600"
+
         Bold ->
             "700"
+
         ExtraBold ->
             "800"
+
         Black ->
             "900"
+
 
 type alias Font =
     { family : String
@@ -58,8 +70,10 @@ type alias Font =
     , isItalic : Bool
     }
 
+
 type alias FontFace =
     String
+
 
 fontToString : Font -> String
 fontToString { family, weight, isItalic } =
@@ -70,20 +84,25 @@ fontToString { family, weight, isItalic } =
         ++ fontStyleProperty isItalic
         ++ ")"
 
+
 type Format
     = Woff2
     | Woff
     | TTF
+
 
 formatToString : Format -> String
 formatToString format =
     case format of
         Woff2 ->
             "woff2"
+
         Woff ->
             "woff"
+
         TTF ->
             "truetype"
+
 
 groupByFamily : List Font -> List (List Font)
 groupByFamily =
@@ -92,40 +111,48 @@ groupByFamily =
             case variants of
                 Just vs ->
                     font :: vs
+
                 Nothing ->
                     List.singleton font
+
         f font =
             Dict.update font.family (Just << insertFont font)
     in
-        Dict.values << List.foldl f Dict.empty
+    Dict.values << List.foldl f Dict.empty
+
 
 
 -- WEB
 
+
 web : List Font -> List FontFace
 web =
     List.map fontFace
+
 
 fontFace : Font -> FontFace
 fontFace ({ family, weight, isItalic } as font) =
     let
         rules =
             String.join ";\n  "
-                [ fontFamily family 
+                [ fontFamily family
                 , fontWeight weight
                 , fontSrc font
                 , fontStyle isItalic
                 ]
     in
-        "@font-face {\n  " ++ rules ++ ";\n}\n"
+    "@font-face {\n  " ++ rules ++ ";\n}\n"
+
 
 fontFamily : String -> String
 fontFamily family =
     "font-family: \"" ++ family ++ "\""
 
+
 fontWeight : Weight -> String
 fontWeight weight =
     "font-weight: " ++ weightToString weight
+
 
 fontSrc : Font -> String
 fontSrc { woff2, woff, ttf } =
@@ -136,29 +163,40 @@ fontSrc { woff2, woff, ttf } =
         ++ ",\n    "
         ++ fontUrl ttf TTF
 
+
 fontUrl : String -> Format -> String
 fontUrl url format =
     "url(\"" ++ url ++ "\") " ++ fontFormat format
+
 
 fontFormat : Format -> String
 fontFormat format =
     "format(\"" ++ formatToString format ++ "\")"
 
+
 fontStyle : Bool -> String
 fontStyle isItalic =
     "font-style: " ++ fontStyleProperty isItalic
 
+
 fontStyleProperty : Bool -> String
 fontStyleProperty isItalic =
-    if isItalic then "italic" else "normal"
+    if isItalic then
+        "italic"
+
+    else
+        "normal"
+
 
 
 -- ANDROID
+
 
 android : List Font -> List FontFace
 android fonts =
     groupByFamily fonts
         |> List.map androidFamily
+
 
 androidFamily : List Font -> FontFace
 androidFamily fonts =
@@ -171,27 +209,39 @@ androidFamily fonts =
         ++ "</font-family>"
         ++ "\n"
 
+
 androidFont : Font -> String
 androidFont { weight, isItalic, ttf } =
     "    <font"
         ++ "\n        "
-        ++ "android:fontStyle=\"" ++ fontStyleProperty isItalic ++ "\""
+        ++ "android:fontStyle=\""
+        ++ fontStyleProperty isItalic
+        ++ "\""
         ++ "\n        "
-        ++ "android:fontWeight=\"" ++ weightToString weight ++ "\""
+        ++ "android:fontWeight=\""
+        ++ weightToString weight
+        ++ "\""
         ++ "\n        "
-        ++ "android:font=\"" ++ "@font/" ++ androidFilename ttf ++ "\""
+        ++ "android:font=\""
+        ++ "@font/"
+        ++ androidFilename ttf
+        ++ "\""
         ++ " />"
+
 
 androidFilename : String -> String
 androidFilename =
     String.toLower << String.replace "-" "_"
 
 
+
 -- JSON
 
+
 fontsDecoder : Decoder (List Font)
-fontsDecoder = 
+fontsDecoder =
     D.field "fonts" (D.list fontDecoder)
+
 
 fontDecoder : Decoder Font
 fontDecoder =
@@ -203,31 +253,42 @@ fontDecoder =
         (D.field "ttf" D.string)
         (D.field "isItalic" D.bool)
 
+
 weightDecoder : Decoder Weight
 weightDecoder =
     D.string
         |> D.andThen decoderWeightString
+
 
 decoderWeightString : String -> Decoder Weight
 decoderWeightString weightString =
     case weightString of
         "Thin" ->
             D.succeed Thin
+
         "ExtraLight" ->
             D.succeed ExtraLight
+
         "Light" ->
             D.succeed Light
+
         "Regular" ->
             D.succeed Regular
+
         "Medium" ->
             D.succeed Medium
+
         "Semibold" ->
             D.succeed SemiBold
+
         "Bold" ->
             D.succeed Bold
+
         "ExtraBold" ->
             D.succeed ExtraBold
+
         "Black" ->
             D.succeed Black
+
         _ ->
             D.fail ("Invalid weight: " ++ weightString)

@@ -1,49 +1,65 @@
 port module Main exposing (..)
 
 import Browser
+import File.Download as Download
+import Font exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (type_, checked, style, class)
+import Html.Attributes exposing (checked, class, style, type_)
 import Html.Events exposing (onCheck, onClick)
 import Http
 import Tuple exposing (pair, second)
-import File.Download as Download
 
-import Font exposing (..)
 
 
 -- PORTS
 
+
 port sendMessage : String -> Cmd msg
+
+
 
 -- MAIN
 
-main = Browser.element
-    { init = init
-    , view = view
-    , update = update
-    , subscriptions = subscriptions
-    }
+
+main =
+    Browser.element
+        { init = init
+        , view = view
+        , update = update
+        , subscriptions = subscriptions
+        }
+
 
 
 -- MODEL
 
+
 type alias Model =
-    List (Selected, Font)
+    List ( Selected, Font )
+
 
 type alias Selected =
     Bool
 
-init : () -> (Model, Cmd Msg)
-init _ =
-    ([], getFonts)
 
-pickSelected : (Selected, Font) -> Maybe Font
-pickSelected (isSelected, font) =
-    if isSelected then Just font else Nothing
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( [], getFonts )
+
+
+pickSelected : ( Selected, Font ) -> Maybe Font
+pickSelected ( isSelected, font ) =
+    if isSelected then
+        Just font
+
+    else
+        Nothing
+
 
 selectedFonts : Model -> List Font
 selectedFonts =
     List.filterMap pickSelected
+
 
 cssString : Model -> String
 cssString model =
@@ -52,7 +68,9 @@ cssString model =
         |> String.join "\n"
 
 
+
 -- UPDATE
+
 
 type Msg
     = GotFonts (Result Http.Error (List Font))
@@ -63,48 +81,66 @@ type Msg
     | DownloadWeb
     | CopyWeb
 
-update : Msg -> Model -> (Model, Cmd Msg)
+
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GotFonts result ->
             case result of
                 Ok fonts ->
-                    (List.map (pair False) fonts, Cmd.none)
+                    ( List.map (pair False) fonts, Cmd.none )
+
                 Err message ->
-                    (model, Cmd.none)
+                    ( model, Cmd.none )
+
         Check index ->
-            (List.indexedMap (setSelected index True) model, Cmd.none)
+            ( List.indexedMap (setSelected index True) model, Cmd.none )
+
         Uncheck index ->
-            (List.indexedMap (setSelected index False) model, Cmd.none)
+            ( List.indexedMap (setSelected index False) model, Cmd.none )
+
         SelectAll ->
-            (List.map (\font -> (True, second font)) model, Cmd.none)
+            ( List.map (\font -> ( True, second font )) model, Cmd.none )
+
         DeselectAll ->
-            (List.map (\font -> (False, second font)) model, Cmd.none)
+            ( List.map (\font -> ( False, second font )) model, Cmd.none )
+
         DownloadWeb ->
-            (model, Download.string "fonts.css" "text/css" (cssString model))
+            ( model, Download.string "fonts.css" "text/css" (cssString model) )
+
         CopyWeb ->
-            (model, sendMessage (cssString model))
+            ( model, sendMessage (cssString model) )
+
 
 getFonts : Cmd Msg
 getFonts =
     Http.get
-    { url = "/fonts.json"
-    , expect = Http.expectJson GotFonts fontsDecoder
-    }
+        { url = "/fonts.json"
+        , expect = Http.expectJson GotFonts fontsDecoder
+        }
 
-setSelected : Int -> Selected -> Int -> (Selected, Font) -> (Selected, Font)
+
+setSelected : Int -> Selected -> Int -> ( Selected, Font ) -> ( Selected, Font )
 setSelected selectedIndex selected index font =
-    if selectedIndex == index then (selected, second font) else font
+    if selectedIndex == index then
+        ( selected, second font )
+
+    else
+        font
+
 
 
 -- SUBSCRIPTIONS
+
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
 
 
+
 -- VIEW
+
 
 view : Model -> Html Msg
 view model =
@@ -126,41 +162,45 @@ view model =
                     , onClick DeselectAll
                     ]
                     [ text "Deselect all" ]
-                , ul [ class "fields__font-list" ]
-                    <| List.indexedMap viewFont model
+                , ul [ class "fields__font-list" ] <|
+                    List.indexedMap viewFont model
                 ]
             , viewFontFaces model
             ]
         ]
+
 
 viewFontFaces : Model -> Html Msg
 viewFontFaces model =
     let
         selected =
             selectedFonts model
+
         webFonts =
             web selected
+
         androidFonts =
             android selected
     in
-        section [ class "font-faces" ]
-            [ h2 [ class "font-faces__heading" ] [ text "Get your fonts" ]
-            , hr [ class "font-faces__keyline" ] []
-            , section []
-                [ h3 [ class "font-faces__heading" ] [ text "Web" ]
-                , viewFontSource webFonts
-                , button
-                    [ class "font-faces__copy", onClick CopyWeb ]
-                    [ text "Copy CSS" ]
-                , button
-                    [ class "font-faces__download", onClick DownloadWeb ]
-                    [ text "Download CSS File" ]
-                ]
-            , section []
-                [ h3 [ class "font-faces__heading" ] [ text "Android" ]
-                , viewFontSource androidFonts
-                ]
+    section [ class "font-faces" ]
+        [ h2 [ class "font-faces__heading" ] [ text "Get your fonts" ]
+        , hr [ class "font-faces__keyline" ] []
+        , section []
+            [ h3 [ class "font-faces__heading" ] [ text "Web" ]
+            , viewFontSource webFonts
+            , button
+                [ class "font-faces__copy", onClick CopyWeb ]
+                [ text "Copy CSS" ]
+            , button
+                [ class "font-faces__download", onClick DownloadWeb ]
+                [ text "Download CSS File" ]
             ]
+        , section []
+            [ h3 [ class "font-faces__heading" ] [ text "Android" ]
+            , viewFontSource androidFonts
+            ]
+        ]
+
 
 viewFontSource : List FontFace -> Html Msg
 viewFontSource fontFaces =
@@ -174,8 +214,9 @@ viewFontSource fontFaces =
             ]
         ]
 
-viewFont : Int -> (Selected, Font) -> Html Msg
-viewFont index (selected, font) =
+
+viewFont : Int -> ( Selected, Font ) -> Html Msg
+viewFont index ( selected, font ) =
     li [ class "fields__font" ]
         [ label
             [ style "font-family" font.family
@@ -193,6 +234,11 @@ viewFont index (selected, font) =
             ]
         ]
 
+
 check : Int -> Bool -> Msg
 check index isChecked =
-    if isChecked then Check index else Uncheck index
+    if isChecked then
+        Check index
+
+    else
+        Uncheck index
