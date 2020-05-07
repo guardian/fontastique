@@ -182,28 +182,28 @@ viewFontFaces model =
         iosFonts =
             ios selected
     in
-        section [ class "font-faces" ]
-            [ h2 [ class "font-faces__heading" ] [ text "Get your fonts" ]
-            , hr [ class "font-faces__keyline" ] []
-            , section []
-                [ h3 [ class "font-faces__heading" ] [ text "Web" ]
-                , viewFontSource webFonts
-                , button
-                    [ class "font-faces__copy", onClick CopyWeb ]
-                    [ text "Copy CSS" ]
-                , button
-                    [ class "font-faces__download", onClick DownloadWeb ]
-                    [ text "Download CSS File" ]
-                ]
-            , section []
-                [ h3 [ class "font-faces__heading" ] [ text "Android" ]
-                , viewFontSource androidFonts
-                ]
-            , section []
-                [ h3 [ class "font-faces__heading" ] [ text "iOS" ]
-                , viewFontSource iosFonts
-                ]
+    section [ class "font-faces" ]
+        [ h2 [ class "font-faces__heading" ] [ text "Get your fonts" ]
+        , hr [ class "font-faces__keyline" ] []
+        , section []
+            [ h3 [ class "font-faces__heading" ] [ text "Web" ]
+            , viewFontSource webFonts
+            , button
+                [ class "font-faces__copy", onClick CopyWeb ]
+                [ text "Copy CSS" ]
+            , button
+                [ class "font-faces__download", onClick DownloadWeb ]
+                [ text "Download CSS File" ]
             ]
+        , section []
+            [ h3 [ class "font-faces__heading" ] [ text "Android" ]
+            , viewFontSource androidFonts
+            ]
+        , section []
+            [ h3 [ class "font-faces__heading" ] [ text "iOS" ]
+            , viewFontSource iosFonts
+            ]
+        ]
 
 
 viewFontSource : String -> Html Msg
