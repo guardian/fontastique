@@ -62,10 +62,8 @@ selectedFonts =
 
 
 cssString : Model -> String
-cssString model =
-    selectedFonts model
-        |> web
-        |> String.join "\n"
+cssString =
+    selectedFonts >> web
 
 
 
@@ -181,6 +179,8 @@ viewFontFaces model =
 
         androidFonts =
             android selected
+        iosFonts =
+            ios selected
     in
     section [ class "font-faces" ]
         [ h2 [ class "font-faces__heading" ] [ text "Get your fonts" ]
@@ -199,18 +199,20 @@ viewFontFaces model =
             [ h3 [ class "font-faces__heading" ] [ text "Android" ]
             , viewFontSource androidFonts
             ]
+        , section []
+            [ h3 [ class "font-faces__heading" ] [ text "iOS" ]
+            , viewFontSource iosFonts
+            ]
         ]
 
 
-viewFontSource : List FontFace -> Html Msg
+viewFontSource : String -> Html Msg
 viewFontSource fontFaces =
     details []
         [ summary [ class "font-faces__source" ] [ text "View Source" ]
         , pre
             [ class "font-faces__code" ]
-            [ fontFaces
-                |> String.join "\n"
-                |> text
+            [ text fontFaces
             ]
         ]
 
