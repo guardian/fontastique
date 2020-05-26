@@ -8,11 +8,13 @@ Choose your fonts, get your CSS.
 npm i
 ```
 
-## Build
+## Setup
 
 ```sh
-npm run build
+npm run setup
 ```
+
+**Note:** Will require Guardian GitHub credentials.
 
 ## Run
 
@@ -25,6 +27,7 @@ Will build the assets and run a local dev server; visit it at http://localhost:8
 Alternatively you can host the `dist` directory locally using a server of your choice. For example:
 
 ```sh
+npm run build
 cd dist
 python3 -m http.server 8080
 ```
