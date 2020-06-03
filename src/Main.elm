@@ -178,8 +178,8 @@ viewTypographyAdvice =
                 [ class "fields__anchor"
                 , href "https://www.theguardian.design/2a1e5182b/p/930d69-typography/b/78d0d9"
                 ]
-                [ text "the Typography section " ]
-            , text "of the design system docs."
+                [ text "the Typography section" ]
+            , text " of the design system docs."
             ]
         ]
 
