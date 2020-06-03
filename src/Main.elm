@@ -4,7 +4,7 @@ import Browser
 import File.Download as Download
 import Font exposing (..)
 import Html exposing (..)
-import Html.Attributes exposing (checked, class, style, type_)
+import Html.Attributes exposing (checked, class, style, type_, href)
 import Html.Events exposing (onCheck, onClick)
 import Http
 import Tuple exposing (pair, second)
@@ -150,6 +150,7 @@ view model =
             [ fieldset [ class "fields" ]
                 [ h2 [ class "fields__heading" ] [ text "Choose your fonts" ]
                 , hr [ class "fields__keyline" ] []
+                , viewTypographyAdvice
                 , button
                     [ class "fields__button"
                     , onClick SelectAll
@@ -164,6 +165,21 @@ view model =
                     List.indexedMap viewFont model
                 ]
             , viewFontFaces model
+            ]
+        ]
+
+
+viewTypographyAdvice : Html Msg
+viewTypographyAdvice =
+    aside [ class "fields__advice" ]
+        [ p []
+            [ text "For more information about the font faces and their recommended use in designs, please see "
+            , a
+                [ class "fields__anchor"
+                , href "https://www.theguardian.design/2a1e5182b/p/930d69-typography/b/78d0d9"
+                ]
+                [ text "the Typography section " ]
+            , text "of the design system docs."
             ]
         ]
 

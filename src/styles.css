@@ -193,6 +193,15 @@ body {
   border-right: 1px solid #dcdcdc;
 }
 
+.fields__advice {
+  font-family: "Guardian Text Egyptian";
+  font-style: italic;
+}
+
+.fields__anchor {
+  color: var(--brand-400);
+}
+
 .fields__heading, .font-faces__heading {
   margin: 0;
   font-family: "Guardian Headline";
