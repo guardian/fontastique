@@ -136,6 +136,7 @@ fontFace ({ family, weight, isItalic } as font) =
                 , fontWeight weight
                 , fontSrc font
                 , fontStyle isItalic
+                , "font-display: swap"
                 ]
     in
     "@font-face {\n  " ++ rules ++ ";\n}\n"
